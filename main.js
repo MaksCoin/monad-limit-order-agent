@@ -1,5 +1,3 @@
-// main.js — ФИНАЛЬНАЯ РАБОЧАЯ ВЕРСИЯ С НАДЕЖНЫМИ ССЫЛКАМИ
-// ИЗМЕНЕНО: Ссылки заменены на стабильный CDN unpkg.com
 import { createPublicClient, http } from 'https://unpkg.com/viem@2.10.0/dist/esm/index.js';
 import { privateKeyToAccount } from 'https://unpkg.com/viem@2.10.0/dist/esm/accounts/index.js';
 import { toMetaMaskSmartAccount, Implementation } from 'https://unpkg.com/@metamask/delegation-toolkit@0.1.0/dist/esm/index.js';
