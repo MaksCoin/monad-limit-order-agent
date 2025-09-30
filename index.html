@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monad Limit Order</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    input, button { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; }
+    button { background: #000; color: white; border: none; cursor: pointer; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    #status { background: #f9f9f9; padding: 12px; margin-top: 16px; border-radius: 6px; font-family: monospace; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Monad Limit Order</h1>
+  <p>Auto-swap via delegation — no server, no contract</p>
+
+  <button id="connect">🔌 Create Smart Account</button>
+
+  <label>Target Price (USDC per WMON):</label>
+  <input id="price" type="number" step="0.01" value="1.5" />
+
+  <button id="delegate" disabled>✅ Grant Delegation</button>
+  <button id="checkPrice" disabled>🔍 Check Current Price</button>
+
+  <div id="status">Status: Not connected</div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
