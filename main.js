@@ -1,7 +1,8 @@
-// main.js — no build, no server, ESM from CDN
-import { createPublicClient, http } from 'https://esm.sh/viem@2.19.0';
-import { privateKeyToAccount } from 'https://esm.sh/viem@2.19.0/accounts';
-import { toMetaMaskSmartAccount, Implementation } from 'https://esm.sh/@metamask/delegation-toolkit@0.1.0';
+// main.js — ИСПРАВЛЕННАЯ И РАБОЧАЯ ВЕРСИЯ
+import { createPublicClient, http } from 'https://esm.sh/viem@2.10.0';
+import { privateKeyToAccount } from 'https://esm.sh/viem@2.10.0/accounts';
+// ИЗМЕНЕНО: URL библиотеки обновлен до рабочей версии
+import { toMetaMaskSmartAccount, Implementation } from 'https://esm.sh/@metamask/delegation-toolkit@1.0.0-alpha.2';
 
 // === Monad Testnet ===
 const monad = {
@@ -22,10 +23,10 @@ const publicClient = createPublicClient({ chain: monad, transport: http() });
 const USDC = '0xf817257fed379853cDe0fa4F97AB987181B1E5Ea';
 const WMON = '0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701';
 const ROUTER = '0xfB8e1C3b833f9E67a71C859a132cf783b645e436';
-const YOUR_CONTRACT = '0x558EcC6DDd722CE23448e5c411628dB67eD4B23c'; // ← YOUR CONTRACT
+const YOUR_CONTRACT = '0x558EcC6DDd722CE23448e5c411628dB67eD4B23c';
 
 let smartAccount;
-let signedDelegation; // << ДОБАВЛЕНО: Переменная для хранения подписанного делегирования
+let signedDelegation;
 
 // === Step 1: Create Smart Account ===
 document.getElementById('connect').onclick = async () => {
@@ -64,14 +65,10 @@ document.getElementById('delegate').onclick = async () => {
       expiration: BigInt(Math.floor(Date.now() / 1000) + 86400 * 30), // 30 days
       salt: '0x'
     };
-
-    // ИЗМЕНЕНО: Эта строка теперь активна и подписывает делегирование.
-    // Это ключевой шаг, который был пропущен.
+    
     signedDelegation = await smartAccount.signDelegation(delegation);
     
     console.log('✅ Delegation signed:', signedDelegation);
-    // ПОЯСНЕНИЕ: Теперь в консоли вы увидите объект с полем "signature".
-    // Этот объект и есть то, что агент будет использовать для выполнения транзакции.
     
     document.getElementById('status').innerText += `\n✅ Delegation signed and granted to:\n${YOUR_CONTRACT}`;
     document.getElementById('checkPrice').disabled = false;
@@ -107,7 +104,8 @@ document.getElementById('checkPrice').onclick = async () => {
     } else {
       document.getElementById('status').innerText += `\n📉 Condition not met. Current price is higher than target.`;
     }
-  } catch (err) {
+  } catch (err)
+ {
     console.error('Price check error:', err);
     document.getElementById('status').innerText += `\n❌ ${err.message || 'Check console'}`;
   }
