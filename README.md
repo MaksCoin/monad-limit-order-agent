@@ -13,7 +13,7 @@ Automatically execute token swaps on **Monad Testnet** when a price target is re
 
 ## Live Demo
 
-https://MaksCoin.github.io/monad-limit-order
+https://makscoin.github.io/monad-limit-order-agent/
 
 
 ##  How It Works
