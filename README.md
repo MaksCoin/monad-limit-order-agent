@@ -1,8 +1,7 @@
 # Monad Limit Order via Delegation
 
 > Submission for **MetaMask Smart Accounts x Monad Dev Cook-Off**  
-> Track: **Best on-chain automation**  
-> **No server • No custom contract • No Envio**
+> Track: **Best on-chain automation**
 
 Automatically execute token swaps on **Monad Testnet** when a price target is reached — using only **MetaMask Smart Accounts** and **delegations** to the canonical UniswapV2Router.
 
