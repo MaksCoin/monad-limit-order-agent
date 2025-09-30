@@ -1,42 +1,31 @@
-# monad-limit-order-agent
+# Monad Limit Order via Delegation
 
 > Submission for **MetaMask Smart Accounts x Monad Dev Cook-Off**  
 > Track: **Best on-chain automation**  
-> Bonus: **Envio Integration** ($1,000+)
+> **No server • No custom contract • No Envio**
 
-Automatically executes token swaps on **Monad Testnet** when a target price is reached — using **MetaMask Smart Accounts** and **delegations**.
+Automatically execute token swaps on **Monad Testnet** when a price target is reached — using only **MetaMask Smart Accounts** and **delegations** to the canonical UniswapV2Router.
 
 -Uses MetaMask Delegation Toolkit  
 -Runs on Monad Testnet (Chain ID 10143)  
--Powered by Envio HyperSync for real-time price monitoring  
--Fully browser-based frontend (HTML/JS)
+-Fully browser-based (GitHub Pages)  
+-No backend, no custom contracts
 
----
 
-## Demo Flow
+## Live Demo
 
-1. User connects & creates a MetaMask Smart Account
-2. Sets a limit order (e.g., "Buy WMON when price ≤ 1.5 USDC")
-3. Grants **delegation** to allow a bot to execute on their behalf
-4. Envio monitors Uniswap V2 `Swap` events via HyperSync
-5. When price condition is met → bot sends UserOp to execute swap
+https://MaksCoin.github.io/monad-limit-order
 
----
 
-## Tech Stack
+##  How It Works
 
-- **Frontend**: HTML + Viem + Delegation Toolkit (ESM)
-- **Smart Contract**: Solidity (no logic needed — delegation allows direct router call)
-- **Indexing**: Envio HyperSync
-- **Network**: Monad Testnet
-- **Tokens**: USDC → WMON (via Uniswap V2)
+1. User creates a **MetaMask Smart Account** on Monad Testnet
+2. Grants **delegation** to call `swapExactTokensForTokens` on the official **UniswapV2Router**
+3. App checks current **USDC/WMON price** via `getAmountsOut`
+4. If price ≤ target → an agent (e.g., relayer or frontend) can execute the swap **on user's behalf**
 
----
+All logic uses **canonical contracts** from Monad Testnet:
+- UniswapV2Router: `0xfb8e1c3b833f9e67a71c859a132cf783b645e436`
+- USDC: `0xf817257fed379853cDe0fa4F97AB987181B1E5Ea`
+- WMON: `0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701`
 
-## Setup
-
-### 1. Install Foundry
-
-```bash
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
