@@ -58,7 +58,7 @@ document.getElementById('delegate').onclick = async () => {
     target: YOUR_CONTRACT,
     functionSelector: '0xb31e6e09', // keccak256("executeOrder(address)")
     expiration: BigInt(Math.floor(Date.now() / 1000) + 86400 * 30), // 30 days
-     '0x'
+    salt: '0x' // ← ИСПРАВЛЕНО: вместо '0x' без ключа — добавлено поле "salt"
   };
 
   // In real app: await smartAccount.signDelegation(delegation)
