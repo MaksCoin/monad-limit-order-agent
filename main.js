@@ -25,10 +25,12 @@ const ROUTER = '0xfB8e1C3b833f9E67a71C859a132cf783b645e436';
 const YOUR_CONTRACT = '0x558EcC6DDd722CE23448e5c411628dB67eD4B23c'; // ← YOUR CONTRACT
 
 let smartAccount;
+let signedDelegation; // << ДОБАВЛЕНО: Переменная для хранения подписанного делегирования
 
 // === Step 1: Create Smart Account ===
 document.getElementById('connect').onclick = async () => {
   try {
+    document.getElementById('status').innerText = '⏳ Creating Smart Account...';
     // For demo only — in real app use secure key or wallet
     const demoKey = '0x' + '1'.repeat(64);
     const eoa = privateKeyToAccount(demoKey);
@@ -52,19 +54,32 @@ document.getElementById('connect').onclick = async () => {
 // === Step 2: Grant Delegation to YOUR contract ===
 document.getElementById('delegate').onclick = async () => {
   if (!smartAccount) return;
+  document.getElementById('status').innerText += `\n⏳ Waiting for delegation signature...`;
 
-  // function executeOrder(address user)
-  const delegation = {
-    target: YOUR_CONTRACT,
-    functionSelector: '0xb31e6e09', // keccak256("executeOrder(address)")
-    expiration: BigInt(Math.floor(Date.now() / 1000) + 86400 * 30), // 30 days
-    salt: '0x' // ← ИСПРАВЛЕНО: вместо '0x' без ключа — добавлено поле "salt"
-  };
+  try {
+    // function executeOrder(address user)
+    const delegation = {
+      target: YOUR_CONTRACT,
+      functionSelector: '0xb31e6e09', // keccak256("executeOrder(address)")
+      expiration: BigInt(Math.floor(Date.now() / 1000) + 86400 * 30), // 30 days
+      salt: '0x'
+    };
 
-  // In real app: await smartAccount.signDelegation(delegation)
-  console.log('✅ Delegation created:', delegation);
-  document.getElementById('status').innerText += `\n✅ Delegation granted to:\n${YOUR_CONTRACT}`;
-  document.getElementById('checkPrice').disabled = false;
+    // ИЗМЕНЕНО: Эта строка теперь активна и подписывает делегирование.
+    // Это ключевой шаг, который был пропущен.
+    signedDelegation = await smartAccount.signDelegation(delegation);
+    
+    console.log('✅ Delegation signed:', signedDelegation);
+    // ПОЯСНЕНИЕ: Теперь в консоли вы увидите объект с полем "signature".
+    // Этот объект и есть то, что агент будет использовать для выполнения транзакции.
+    
+    document.getElementById('status').innerText += `\n✅ Delegation signed and granted to:\n${YOUR_CONTRACT}`;
+    document.getElementById('checkPrice').disabled = false;
+
+  } catch (err) {
+    console.error('Delegation error:', err);
+    document.getElementById('status').innerText += `\n❌ Delegation error: ${err.message || 'Check console'}`;
+  }
 };
 
 // === Step 3: Check Current Price ===
@@ -72,6 +87,8 @@ document.getElementById('checkPrice').onclick = async () => {
   try {
     const target = parseFloat(document.getElementById('price').value);
     const amountIn = 1000000n; // 1 USDC
+
+    document.getElementById('status').innerText += `\n⏳ Checking price...`;
 
     const amounts = await publicClient.readContract({
       address: ROUTER,
@@ -86,7 +103,9 @@ document.getElementById('checkPrice').onclick = async () => {
     document.getElementById('status').innerText += `\n📊 Current price: ${usdcPerWmon.toFixed(4)} USDC/WMON`;
 
     if (usdcPerWmon <= target) {
-      document.getElementById('status').innerText += `\n🤖 Condition met! Agent can call executeOrder(user).`;
+      document.getElementById('status').innerText += `\n🤖 Condition met! Agent can now call executeOrder(user) with the signed delegation.`;
+    } else {
+      document.getElementById('status').innerText += `\n📉 Condition not met. Current price is higher than target.`;
     }
   } catch (err) {
     console.error('Price check error:', err);
