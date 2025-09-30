@@ -1,8 +1,8 @@
-// main.js — ИСПРАВЛЕННАЯ И РАБОЧАЯ ВЕРСИЯ
-import { createPublicClient, http } from 'https://esm.sh/viem@2.10.0';
-import { privateKeyToAccount } from 'https://esm.sh/viem@2.10.0/accounts';
-// ИЗМЕНЕНО: URL библиотеки обновлен до рабочей версии
-import { toMetaMaskSmartAccount, Implementation } from 'https://esm.sh/@metamask/delegation-toolkit@1.0.0-alpha.2';
+// main.js — ФИНАЛЬНАЯ РАБОЧАЯ ВЕРСИЯ С НАДЕЖНЫМИ ССЫЛКАМИ
+// ИЗМЕНЕНО: Ссылки заменены на стабильный CDN unpkg.com
+import { createPublicClient, http } from 'https://unpkg.com/viem@2.10.0/dist/esm/index.js';
+import { privateKeyToAccount } from 'https://unpkg.com/viem@2.10.0/dist/esm/accounts/index.js';
+import { toMetaMaskSmartAccount, Implementation } from 'https://unpkg.com/@metamask/delegation-toolkit@0.1.0/dist/esm/index.js';
 
 // === Monad Testnet ===
 const monad = {
@@ -11,7 +11,6 @@ const monad = {
   nativeCurrency: { name: 'MON', symbol: 'MON', decimals: 18 },
   rpcUrls: {
     default: {
-      // Use CORS proxy to avoid browser block
       http: ['https://corsproxy.io/?https://testnet-rpc.monad.xyz']
     }
   },
@@ -32,7 +31,6 @@ let signedDelegation;
 document.getElementById('connect').onclick = async () => {
   try {
     document.getElementById('status').innerText = '⏳ Creating Smart Account...';
-    // For demo only — in real app use secure key or wallet
     const demoKey = '0x' + '1'.repeat(64);
     const eoa = privateKeyToAccount(demoKey);
 
@@ -58,7 +56,6 @@ document.getElementById('delegate').onclick = async () => {
   document.getElementById('status').innerText += `\n⏳ Waiting for delegation signature...`;
 
   try {
-    // function executeOrder(address user)
     const delegation = {
       target: YOUR_CONTRACT,
       functionSelector: '0xb31e6e09', // keccak256("executeOrder(address)")
@@ -94,7 +91,7 @@ document.getElementById('checkPrice').onclick = async () => {
       args: [amountIn, [USDC, WMON]]
     });
 
-    const wmonOut = amounts[1]; // WMON amount (18 decimals)
+    const wmonOut = amounts[1];
     const usdcPerWmon = 1 / (Number(wmonOut) / 1e18);
 
     document.getElementById('status').innerText += `\n📊 Current price: ${usdcPerWmon.toFixed(4)} USDC/WMON`;
@@ -104,8 +101,7 @@ document.getElementById('checkPrice').onclick = async () => {
     } else {
       document.getElementById('status').innerText += `\n📉 Condition not met. Current price is higher than target.`;
     }
-  } catch (err)
- {
+  } catch (err) {
     console.error('Price check error:', err);
     document.getElementById('status').innerText += `\n❌ ${err.message || 'Check console'}`;
   }
