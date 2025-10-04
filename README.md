@@ -2,10 +2,10 @@
 
 Automatically executes token swaps on **Monad Testnet** when a target price is reached — using **MetaMask Smart Accounts** and **delegations** to a custom limit order contract.
 
--Uses MetaMask Delegation Toolkit  
--Runs on Monad Testnet (Chain ID 10143)  
--Contract: `0x558EcC6DDd722CE23448e5c411628dB67eD4B23c`  
--Fully browser-based (GitHub Pages)
+- Uses MetaMask Delegation Toolkit  
+- Runs on Monad Testnet (Chain ID 10143)  
+- Contract: `0x558EcC6DDd722CE23448e5c411628dB67eD4B23c`  
+- Fully browser-based (GitHub Pages)
 
 
 ## 🔗 Live Demo
