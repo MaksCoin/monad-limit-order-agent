@@ -5,7 +5,7 @@ Automatically executes token swaps on **Monad Testnet** when a target price is r
 - Uses MetaMask Delegation Toolkit  
 - Runs on Monad Testnet (Chain ID 10143)  
 - Contract: `0x558EcC6DDd722CE23448e5c411628dB67eD4B23c`  
-- Fully browser-based (GitHub Pages)
+- Fully browser-based (GitHub Pages) 
 
 
 ## 🔗 Live Demo
